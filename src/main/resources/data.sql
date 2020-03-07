@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS users(
+id          INT(11) PRIMARY KEY AUTO_INCREMENT,
+    isbn    VARCHAR(50) NOT NULL,
+    title   VARCHAR(50) NOT NULL,
+author      VARCHAR(50) NULL
+);
