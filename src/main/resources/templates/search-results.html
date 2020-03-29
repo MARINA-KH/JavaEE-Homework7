@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book Sample</title>
+    <title>Search Results</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -10,14 +10,21 @@
 </head>
 <body>
 
-<h1> ISBN: </h1>
-<span th:text="${book.isbn}"/>
 
-<h1> Title: </h1>
-<span th:text="${book.title}"/>
-
-<h1> Author: </h1>
-<span th:text="${book.author}"/>
+<table>
+    <thead>
+    <th> ISBN </th>
+    <th> Title </th>
+    <th> Author </th>
+    </thead>
+    <tbody>
+    <tr th:each="book: ${books}">
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+    </tr>
+    </tbody>
+</table>
 
 
 <a href="/books-list">

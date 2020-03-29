@@ -1,21 +1,17 @@
-package com.example.demo;
+package com.example.demo.controllers;
+import com.example.demo.repositories.IBookRepository;
+import com.example.demo.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 public class IndexController {
 
     @Autowired
-    private BookService bookService;
+    private IBookRepository bookRepository;
 
 
     @RequestMapping(value = "/add-book", method = RequestMethod.GET)
@@ -26,23 +22,40 @@ public class IndexController {
     @RequestMapping(value = "/add-book", method = RequestMethod.POST)
     public String addBookPost(@ModelAttribute Book book, Model model) {
         model.addAttribute("book", book);
-        bookService.createBook(book);
+        bookRepository.save(book);
         return "redirect:/books-list";
     }
 
     @RequestMapping(value = "/books-list", method = RequestMethod.GET)
     public String bookList(Model model) {
-        model.addAttribute("books", bookService.findAllBooks());
+        model.addAttribute("books", bookRepository.findAll());
         return "index";
     }
 
     @RequestMapping(value = "/books-list/book/{id}", method = RequestMethod.GET)
     public String getBookPathVariable(
             @PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookService.getBookById(id));
+        model.addAttribute("book", bookRepository.getOne(id));
 
         return "SampleInfo";
     }
+
+
+    @RequestMapping(value = "/books-list/find-by-title")
+    public String findBookByTitle(
+            @RequestParam("title") String title, Model model) {
+        model.addAttribute("books", bookRepository.findAllByTitle(title));
+        return "search-results";
+    }
+
+
+    @RequestMapping(value = "/books-list/find-by-isbn")
+    public String findBookByIsbn(
+            @RequestParam("isbn") String isbn, Model model) {
+        model.addAttribute("books", bookRepository.findAllByIsbn(isbn));
+        return "search-results";
+    }
+
 
 
 }
